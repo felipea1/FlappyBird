@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Pipes : MonoBehaviour
 {
-    public float speed = 5f;
+    public Transform top;
+    public Transform bottom;
 
+    public float speed = 5f;
     private float leftEdge;
 
     private void Start()
@@ -19,4 +21,5 @@ public class Pipes : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
 }

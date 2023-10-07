@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour
 
     public float minHeight = -1f;
 
-    public float maxHeight = 1f;
+    public float maxHeight = 2f;
 
     private void OnEnable()
     {

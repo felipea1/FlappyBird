@@ -3,31 +3,43 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-  
-  public Player player;
+    private Player player;
+    private Spawner spawner;
 
-  public Text scoreText;
+    public Text scoreText;
+    public GameObject playButton;
+    public GameObject gameOver;
+    public GameObject QuitButton;
+    public GameObject Title;
 
-  public GameObject playButton;
+    public int score { get; private set; }
 
-  public GameObject gameOver;
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
 
-  private int score;
+        player = FindObjectOfType<Player>();
+        spawner = FindObjectOfType<Spawner>();
 
-  private void Awake()
-  {
-    Application.targetFrameRate = 60;
+        Title.SetActive(true);
+        playButton.SetActive(true);
+        gameOver.SetActive(false);
+        QuitButton.SetActive(true);
+        scoreText.gameObject.SetActive(false);
 
-    Pause();
-  }
-  
-  public void Play()
+        Pause();
+    }
+
+    public void Play()
     {
         score = 0;
         scoreText.text = score.ToString();
 
         playButton.SetActive(false);
         gameOver.SetActive(false);
+        QuitButton.SetActive(false);
+        Title.SetActive(false);
+        scoreText.gameObject.SetActive(true);
 
         Time.timeScale = 1f;
         player.enabled = true;
@@ -39,23 +51,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-  private void Pause()
-  {
-    Time.timeScale = 0f;
-    player.enabled = false;
-  }
+    public void GameOver()
+    {
+        playButton.SetActive(true);
+        gameOver.SetActive(true);
+        QuitButton.SetActive(true);
+        Title.SetActive(false);
+        scoreText.gameObject.SetActive(true);
 
-  public void GameOver()
-  {
-    gameOver.SetActive(true);
-    playButton.SetActive(true);
+        Pause();
+    }
 
-    Pause();
-  }
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+        player.enabled = false;
+    }
 
-  public void IncreaseScore()
-  {
-    score++;
-    scoreText.text = score.ToString();
-  }
+    public void IncreaseScore()
+    {
+        score++;
+        scoreText.text = score.ToString();
+    }
+
 }
