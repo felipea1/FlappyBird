@@ -7,12 +7,20 @@ public class GameManager : MonoBehaviour
     private Spawner spawner;
 
     public Text scoreText;
+    public Text bestText;
+    public Text scoreTXT;
+    public Text bestTXT;
+
     public GameObject playButton;
     public GameObject gameOver;
     public GameObject QuitButton;
     public GameObject Title;
 
+    public AudioClip scoreIncreaseSound;
+    public AudioClip dieSound;
+
     public int score { get; private set; }
+    private int bestScore;
 
     private void Awake()
     {
@@ -26,6 +34,12 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(false);
         QuitButton.SetActive(true);
         scoreText.gameObject.SetActive(false);
+        bestText.gameObject.SetActive(false);
+        scoreTXT.gameObject.SetActive(false);
+        bestTXT.gameObject.SetActive(false);
+
+        bestScore = PlayerPrefs.GetInt("BestScore", 0);
+        bestText.text = bestScore.ToString();
 
         Pause();
     }
@@ -40,6 +54,9 @@ public class GameManager : MonoBehaviour
         QuitButton.SetActive(false);
         Title.SetActive(false);
         scoreText.gameObject.SetActive(true);
+        bestText.gameObject.SetActive(true);
+        scoreTXT.gameObject.SetActive(true);
+        bestTXT.gameObject.SetActive(true);
 
         Time.timeScale = 1f;
         player.enabled = true;
@@ -58,6 +75,20 @@ public class GameManager : MonoBehaviour
         QuitButton.SetActive(true);
         Title.SetActive(false);
         scoreText.gameObject.SetActive(true);
+        bestText.gameObject.SetActive(true);
+        scoreTXT.gameObject.SetActive(true);
+        bestTXT.gameObject.SetActive(true);
+
+        if (dieSound != null)
+        {
+            AudioSource.PlayClipAtPoint(dieSound, Camera.main.transform.position);
+        }
+
+        if (score > bestScore)
+        {
+            bestScore = score;
+            PlayerPrefs.SetInt("BestScore", bestScore);
+        }
 
         Pause();
     }
@@ -72,6 +103,17 @@ public class GameManager : MonoBehaviour
     {
         score++;
         scoreText.text = score.ToString();
-    }
 
+        if (score > bestScore)
+        {
+            bestScore = score;
+            PlayerPrefs.SetInt("BestScore", bestScore);
+            bestText.text = bestScore.ToString();
+        }
+
+        if (scoreIncreaseSound != null)
+        {
+            AudioSource.PlayClipAtPoint(scoreIncreaseSound, Camera.main.transform.position);
+        }
+    }
 }

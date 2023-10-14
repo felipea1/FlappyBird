@@ -11,10 +11,12 @@ public class Player : MonoBehaviour
     public float tilt = 5f;
 
     private Vector3 direction;
+    private AudioSource sound;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        sound = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
             direction = Vector3.up * strength;
+            sound.Play();
         }
 
         // Apply gravity and update the position
